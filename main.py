@@ -28,7 +28,7 @@ while True:
             fireHumi.append(int(m.string[begin+8:begin+10],16))
             #print(m.string[begin+8:begin+10])
             little=m.string[begin+12:begin+14]+m.string[begin+10:begin+12]
-            fireSmoke.append(int(m.string[begin+10:begin+14],16)/100)
+            fireSmoke.append(int(m.string[begin+10:begin+14],16)/50)
             #fireSmoke.append(int(little,16))
              #print(m.string[begin+10:begin+14])
             fireMit.append(int(m.string[begin+14:begin+16],16))
@@ -37,7 +37,7 @@ while True:
                 fireType1.append(int(m.string[begin + 4:begin + 6], 16))
                 fireTemp1.append(int(m.string[begin + 6:begin + 8], 16))
                 fireHumi1.append(int(m.string[begin + 8:begin + 10], 16))
-                fireSmoke1.append(int(m.string[begin + 10:begin + 14], 16)/100)
+                fireSmoke1.append(int(m.string[begin + 10:begin + 14], 16)/50)
         elif m.string[begin:begin+4]=='0509':
             two=True;
             gasType.append(int(m.string[begin + 4:begin + 6], 16))
@@ -65,14 +65,15 @@ print('가스연기:', gasSmell)
 
 
 plt.title("Fire Senseor")
-plt.xlabel("Time(sec)")
+plt.xlabel("Time(10sec)")
 plt.ylabel("C(%)")
-plt.plot(fireType)
-plt.plot(fireHumi)
-plt.plot(fireTemp)
-plt.plot(fireSmoke)
 
-plt.legend(['Fire Type', 'Humi(%)', 'Temp(C)', 'Smoke/100'])
+plt.plot(fireHumi)
+plt.plot(fireSmoke)
+plt.plot(fireTemp)
+plt.plot(fireType)
+
+plt.legend(['Humi(%)', 'Smoke/50','Temp(C)', 'Fire Type', ])
 plt.show()
 plt.title("Fire Senseor")
 plt.xlabel("Time(sec)")
@@ -82,18 +83,23 @@ plt.legend(['Smoke'])
 plt.show()
 
 plt.title("Fire & Gas Senseor")
-plt.xlabel("Time(sec)")
+plt.xlabel("Time(10sec)")
 plt.ylabel("C(%)")
-plt.plot(fireType1)
+
+
+plt.plot(gasSmell)
+plt.plot(gasCo2)
 plt.plot(fireHumi1)
-plt.plot(fireTemp1)
 plt.plot(fireSmoke1)
-plt.plot(gasType)
 plt.plot(gasHumi)
 plt.plot(gasTemp)
-plt.plot(gasCo2)
-plt.plot(gasSmell)
-plt.legend(['Fire Type', 'Humi(%)', 'Temp(C)', 'Smoke/100','Gas Type','gasHumi(%)', 'gasTemp(C)', 'CO2/10', 'Smell/100'])
+plt.plot(fireTemp1)
+plt.plot(gasType)
+plt.plot(fireType1)
+
+
+
+plt.legend(['GasSmell/100','CO2/10','FireHumi(%)','FireSmoke/50', 'gasHumi(%)','gasTemp(C)','FireTemp(C)','Gas Type','Fire Type'])
 plt.show()
 
 # plt.title("Gas Senseor")
