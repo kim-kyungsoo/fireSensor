@@ -5,7 +5,9 @@ from re import *
 f=open('D:/sensor/repeater12051809.log')
 num=0;
 fireType=[];fireTemp=[]; fireHumi=[]; fireSmoke=[]; fireMit=[]
+fireType1=[];fireTemp1=[]; fireHumi1=[]; fireSmoke1=[]; fireMit1=[]
 gasType=[];gasTemp=[]; gasHumi=[]; gasSmell=[]; gasCo2=[]
+two=False
 while True:
     line = f.readline()
     if not line: break
@@ -26,21 +28,27 @@ while True:
             fireHumi.append(int(m.string[begin+8:begin+10],16))
             #print(m.string[begin+8:begin+10])
             little=m.string[begin+12:begin+14]+m.string[begin+10:begin+12]
-            fireSmoke.append(int(m.string[begin+10:begin+14],16))
+            fireSmoke.append(int(m.string[begin+10:begin+14],16)/100)
             #fireSmoke.append(int(little,16))
              #print(m.string[begin+10:begin+14])
             fireMit.append(int(m.string[begin+14:begin+16],16))
             #print(m.string[begin+14:begin+16])
+            if two:
+                fireType1.append(int(m.string[begin + 4:begin + 6], 16))
+                fireTemp1.append(int(m.string[begin + 6:begin + 8], 16))
+                fireHumi1.append(int(m.string[begin + 8:begin + 10], 16))
+                fireSmoke1.append(int(m.string[begin + 10:begin + 14], 16)/100)
         elif m.string[begin:begin+4]=='0509':
+            two=True;
             gasType.append(int(m.string[begin + 4:begin + 6], 16))
             gasTemp.append(int(m.string[begin+6:begin+8],16))
             gasHumi.append(int(m.string[begin+8:begin+10],16))
             little = m.string[begin + 12:begin + 14] + m.string[begin + 10:begin + 12]
-            gasCo2.append(int(m.string[begin+10:begin+14],16))
+            gasCo2.append(int(m.string[begin+10:begin+14],16)/10)
             #gasSmell.append(int(m.string[begin+8:begin+12],16))
             #gasCo2.append(int(little,16))
             little = m.string[begin + 16:begin + 18] + m.string[begin + 14:begin + 16]
-            gasSmell.append(int(m.string[begin+14:begin+18],16))
+            gasSmell.append(int(m.string[begin+14:begin+18],16)/100)
             #gasSmell.append(int(little, 16))
 f.close()
 print('화재타입:', fireType)
@@ -60,10 +68,11 @@ plt.title("Fire Senseor")
 plt.xlabel("Time(sec)")
 plt.ylabel("C(%)")
 plt.plot(fireType)
-plt.plot(fireTemp)
 plt.plot(fireHumi)
+plt.plot(fireTemp)
+plt.plot(fireSmoke)
 
-plt.legend(['Fire Type', 'Humi(%)', 'Temp(C)'])
+plt.legend(['Fire Type', 'Humi(%)', 'Temp(C)', 'Smoke/100'])
 plt.show()
 plt.title("Fire Senseor")
 plt.xlabel("Time(sec)")
@@ -72,19 +81,25 @@ plt.plot(fireSmoke)
 plt.legend(['Smoke'])
 plt.show()
 
-plt.title("Gas Senseor")
+plt.title("Fire & Gas Senseor")
 plt.xlabel("Time(sec)")
 plt.ylabel("C(%)")
+plt.plot(fireType1)
+plt.plot(fireHumi1)
+plt.plot(fireTemp1)
+plt.plot(fireSmoke1)
 plt.plot(gasType)
 plt.plot(gasHumi)
 plt.plot(gasTemp)
-plt.legend(['Gas Type','Humi(%)', 'Temp(C)'])
-plt.show()
-
-plt.title("Gas Senseor")
-plt.xlabel("Time(sec)")
-plt.ylabel("%")
 plt.plot(gasCo2)
 plt.plot(gasSmell)
-plt.legend(['Co2', 'Smell)'])
+plt.legend(['Fire Type', 'Humi(%)', 'Temp(C)', 'Smoke/100','Gas Type','gasHumi(%)', 'gasTemp(C)', 'CO2/10', 'Smell/100'])
 plt.show()
+
+# plt.title("Gas Senseor")
+# plt.xlabel("Time(sec)")
+# plt.ylabel("%")
+# plt.plot(gasCo2)
+# plt.plot(gasSmell)
+# plt.legend(['Co2', 'Smell)'])
+# plt.show()
